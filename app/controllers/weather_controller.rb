@@ -7,8 +7,8 @@ class WeatherController < ApplicationController
     api_key = Rails.application.credentials.open_weather_map[:api_key]
     service = OpenWeatherMap::Forecast.new(api_key)
     response = service.forecast(params[:city])
-    @forecast = response.parsed_response['list']
-    @date_forecast, @current_weather = RetriveWeatherInfo.new(@forecast).call
+    @forecast = response.parsed_response['list'] if response
+    @date_forecast, @current_weather = RetriveWeatherInfo.new(@forecast).call if @forecast
     if @forecast
       render :forecast
     else

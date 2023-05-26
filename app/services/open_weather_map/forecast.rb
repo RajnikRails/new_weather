@@ -10,7 +10,7 @@ module OpenWeatherMap
 
     def forecast(city)
       @city = city
-      HTTParty.get("#{BASE_URL}/forecast?lat=#{lat}&lon=#{lon}&appid=#{@api_key}")
+      HTTParty.get("#{BASE_URL}/forecast?lat=#{lat}&lon=#{lon}&appid=#{@api_key}") if lat && lon
     end
 
     private
