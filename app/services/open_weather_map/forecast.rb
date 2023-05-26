@@ -16,11 +16,11 @@ module OpenWeatherMap
     private
 
     def lat
-      geocoded_city_response.first['lat']
+      geocoded_city_response&.first&.dig('lat')
     end
 
     def lon
-      geocoded_city_response.first['lon']
+      geocoded_city_response&.first&.dig('lon')
     end
 
     def geocoded_city_response

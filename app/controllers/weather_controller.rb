@@ -8,8 +8,8 @@ class WeatherController < ApplicationController
     service = OpenWeatherMap::Forecast.new(api_key)
     response = service.forecast(params[:city])
     @forecast = response.parsed_response['list']
-
-    if @forecast.present?
+    @date_forecast, @current_weather = RetriveWeatherInfo.new(@forecast).call
+    if @forecast
       render :forecast
     else
       render :index

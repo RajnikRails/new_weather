@@ -1,31 +1,48 @@
 <!-- app/views/weather/forecast.html.erb -->
-<h1>Weather Forecast</h1>
+<div class="text-center mt-4 mb-4">
+  <h1>Weather Forecast</h1>
+</div>
 
-<%= form_tag weather_forecast_path, method: :get do %>
-  <%= label_tag :city, 'City:' %>
-  <%= text_field_tag :city, params[:city] %>
-  <%= submit_tag 'Search' %>
-<% end %>
+<div class="container">
+  <%= form_tag weather_forecast_path, method: :get do %>
+    <div class="input-group">
+      <%= label_tag :city, 'City:', class: "form-label m-1 p-2" %>
+      <%= text_field_tag :city, params[:city], class: "form-control m-1" %>
+      <%= submit_tag 'Search', class: "btn btn-primary m-1" %>
+      <%= link_to "Reset", root_path, class: "btn btn-primary m-1"  %>
+    </div>
+  <% end %>
 
-<% if @forecast %>
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>High Temp</th>
-        <th>Low Temp</th>
-        <th>Weather</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @forecast.each do |entry| %>
-        <tr>
-          <td><%= entry['dt_txt'] %></td>
-          <td><%= entry['main']['temp_max'].round(2) %> °C</td>
-          <td><%= entry['main']['temp_min'].round(2) %> °C</td>
-          <td><%= entry['weather'].first['description'].capitalize %></td>
-        </tr>
+  <div class="card text-white text-center m-5" style="background: #336eaa;">
+    <div class="text-center mt-4 mb-4">
+      <%= params[:city].capitalize %><br>
+      Temperature <%= @current_weather.dig("main", "temp") %>°<br>
+      Humidity <%= @current_weather.dig("main", "humidity") %>% | 
+      <%= @current_weather.dig("weather").pluck("description").join(', ').capitalize %>
+    </div>
+    <div class="card-body">
+      <% if @date_forecast %>
+        <table class="table mt-5">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>High Temp</th>
+              <th>Low Temp</th>
+              <th>Weather</th>
+            </tr>
+          </thead>
+          <tbody class="text-white">
+            <% @date_forecast.each do |entry| %>
+              <tr>
+                <td><%= entry[:dt_txt] %></td>
+                <td><%= entry[:temp_max].round(2) %> °C</td>
+                <td><%= entry[:temp_min].round(2) %> °C</td>
+                <td><%= entry[:weather] %></td>
+                </tr>
+            <% end %>
+          </tbody>
+        </table>
       <% end %>
-    </tbody>
-  </table>
-<% end %>
+    </div>
+  </div>
+</div>
